@@ -1,5 +1,13 @@
 package com.ot.man.admin.data.dto;
 
-public class AdminDTO {
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
+@Getter
+@Setter
+public class AdminDTO {
+	@NonNull
+	private String id;
+	private String pw;
 }
