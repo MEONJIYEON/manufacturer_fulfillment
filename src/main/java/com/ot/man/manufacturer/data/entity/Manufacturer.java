@@ -11,13 +11,19 @@ import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name= "M_O_Manufacturer")
 public class Manufacturer {
 	
+	
+
 	//출고번호 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "out_number_seq")
@@ -43,10 +49,15 @@ public class Manufacturer {
 	@Column(nullable = false)
 	private boolean out_status; 
 	
+	@Column(nullable = false)
+	 private LocalDateTime out_date;
+	
 	@PrePersist
     protected void onCreate() {
-		out_start_at = LocalDateTime.now();
+        out_start_at = LocalDateTime.now();
+        if (out_date == null) {
+            out_date = LocalDateTime.now();  // 기본값 설정
+        }
     }
-
 	
 }
