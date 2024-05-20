@@ -1,5 +1,7 @@
 package com.ot.man.admin.data.dao;
 
-public interface AdminDAO {
+import com.ot.man.admin.data.entity.Admin;
 
+public interface AdminDAO {
+	 Admin findById(String id);
 }
