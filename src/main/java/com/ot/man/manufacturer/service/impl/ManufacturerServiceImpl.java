@@ -1,7 +1,9 @@
 package com.ot.man.manufacturer.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,22 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 		
 		return manufacturerDTO;
 	}
+	@Override
+    public List<ManufacturerDTO> getAllManufacturers() {
+        List<Manufacturer> manufacturers = manufacturerDAO.selectManufacturerAll();
+        return manufacturers.stream().map(manufacturer -> {
+            ManufacturerDTO manufacturerDTO = new ManufacturerDTO();
+            manufacturerDTO.setOut_number(manufacturer.getOut_number());
+            manufacturerDTO.setOut_pname(manufacturer.getOut_pname());
+            manufacturerDTO.setOut_stock(manufacturer.getOut_stock());
+            manufacturerDTO.setOut_start_at(manufacturer.getOut_start_at());
+            manufacturerDTO.setOut_complete_at(manufacturer.getOut_complete_at());
+            manufacturerDTO.setOut_status(manufacturer.isOut_status());
+            manufacturerDTO.setOut_date(manufacturer.getOut_date());
+            manufacturerDTO.setOut_history(manufacturer.getOut_history());
+            return manufacturerDTO;
+        }).collect(Collectors.toList());
+    }
 
 	@Override
 	public ManufacturerResponseDTO saveManufacturer(ManufacturerDTO manufacturerDTO) {

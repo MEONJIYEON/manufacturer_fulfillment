@@ -1,5 +1,7 @@
 package com.ot.man.manufacturer.controller.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +32,17 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 
 	
 
-	@GetMapping()
+	@GetMapping("/{id}")
 	public ResponseEntity<ManufacturerDTO> getManufacturer(Long out_number) {
 		 ManufacturerDTO manufacturerResponseDTO = manufacturerService.getManufacturer(out_number);
 			return  ResponseEntity.status(HttpStatus.OK).body(manufacturerResponseDTO);
 	}
+	
+	@GetMapping("/all")
+    public ResponseEntity<List<ManufacturerDTO>> getAllManufacturers() {
+        List<ManufacturerDTO> manufacturers = manufacturerService.getAllManufacturers();
+        return ResponseEntity.status(HttpStatus.OK).body(manufacturers);
+    }
 	
 	@PostMapping()
 	public ResponseEntity<ManufacturerResponseDTO> createManufacturer(@RequestBody ManufacturerDTO manufacturerDTO){
