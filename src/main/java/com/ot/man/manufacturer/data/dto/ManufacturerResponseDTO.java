@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ManufacturerResponseDTO {
 	 private long out_number;
-	    private String out_pname;
-	    private long out_stock;
+	 private String out_pname;
+	 private long out_stock;
+	 private boolean out_status;
 	   
 }

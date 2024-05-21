@@ -48,6 +48,7 @@ public class ManufacturerDAOImpl implements ManufacturerDAO {
 		}
 
 		Manufacturer manufacturer = optionalManufacturer.get();
+		manufacturer.setOut_pname(out_pname);
 		manufacturer.setOut_status(out_status);
 		manufacturer.setOut_stock(out_stock);
 

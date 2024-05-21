@@ -81,14 +81,15 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	}
 
 	@Override
-	public ManufacturerResponseDTO updateManufacturerStock(Long out_number, Long out_stock, String out_pname, boolean out_status) throws Exception {
+	public ManufacturerResponseDTO updateManufacturerStock(Long out_number,String out_pname, boolean out_status,  Long out_stock) throws Exception {
 	
 		Manufacturer updateManufacturer = manufacturerDAO.updateManufacturerStock(out_number, out_pname, out_status, out_stock);
 		
 		ManufacturerResponseDTO manufacturerResponseDTO = new ManufacturerResponseDTO();
 		manufacturerResponseDTO.setOut_number(updateManufacturer.getOut_number());
 		manufacturerResponseDTO.setOut_pname(updateManufacturer.getOut_pname());
-		
+		//수정
+		manufacturerResponseDTO.setOut_status(updateManufacturer.isOut_status());
 		manufacturerResponseDTO.setOut_stock(updateManufacturer.getOut_stock());
 		
 		return manufacturerResponseDTO;
