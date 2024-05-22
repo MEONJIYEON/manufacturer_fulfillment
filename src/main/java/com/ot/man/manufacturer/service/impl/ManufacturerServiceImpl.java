@@ -2,7 +2,6 @@ package com.ot.man.manufacturer.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,9 @@ import com.ot.man.manufacturer.data.dao.ManufacturerDAO;
 import com.ot.man.manufacturer.data.dto.ManufacturerApiDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerResponseDTO;
+import com.ot.man.manufacturer.data.dto.ManufacturerToMainDto;
 import com.ot.man.manufacturer.data.entity.Manufacturer;
 import com.ot.man.manufacturer.service.ManufacturerService;
-
-import lombok.Builder;
 
 @Service
 public class ManufacturerServiceImpl implements ManufacturerService {
@@ -126,7 +124,27 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	            .block();
 	}
 
+	public ResponseEntity<ManufacturerToMainDto> ManufacturerToMainDto(String out_productcode,String out_pname, Integer out_stock) {
+	       WebClient webClient = WebClient.builder()
+	               .baseUrl("http://localhost:9001")
+	               .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+	               .build();
+	       
+	       // 세션에서 product_code값을 가지고 와서 findbyId()가 실행되는 컨트롤러 실행
+	       // manufacturerControllerImpl.insertManufacturer("session_name", "", null)
 
+	       ManufacturerToMainDto manufacturerToMainDto = new ManufacturerToMainDto();
+	       manufacturerToMainDto.setOut_pname(out_productcode);
+	       manufacturerToMainDto.setOut_productcode(out_pname);
+	       manufacturerToMainDto.setOut_stock(out_stock);
+
+	       return webClient.post()
+	               .uri("/api/v1/main-fulfillment/in/manufacturerToMain")
+	               .bodyValue(manufacturerToMainDto)
+	               .retrieve()
+	               .toEntity(ManufacturerToMainDto.class)
+	               .block();
+	   }
  
 
 

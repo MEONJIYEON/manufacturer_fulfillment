@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import com.ot.man.manufacturer.data.dto.ManufacturerApiDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerResponseDTO;
+import com.ot.man.manufacturer.data.dto.ManufacturerToMainDto;
 
 public interface ManufacturerService {
 	
@@ -22,5 +23,8 @@ public interface ManufacturerService {
 	
 	ResponseEntity<ManufacturerApiDTO> postWithBodyOnly();
 //	ManufacturerDTO insertManufacturer(ManufacturerDTO manufacturerDTO);
+
+	ResponseEntity<ManufacturerToMainDto> ManufacturerToMainDto(String out_productcode, String out_pname,
+			Integer out_stock);
 
 }
