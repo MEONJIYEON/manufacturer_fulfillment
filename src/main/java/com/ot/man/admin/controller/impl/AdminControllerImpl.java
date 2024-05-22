@@ -1,44 +1,49 @@
 package com.ot.man.admin.controller.impl;
 
-import javax.servlet.http.HttpSession;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ot.man.admin.controller.AdminController;
-import com.ot.man.admin.data.entity.Admin;
+import com.ot.man.admin.data.dto.AdminLoginRequestDTO;
 import com.ot.man.admin.service.AdminService;
 
-@Controller
+@RestController
+@RequestMapping("/manufacturer")
 public class AdminControllerImpl implements AdminController {
-	 private final AdminService adminService;
-	 
-	 @Autowired
-	    public AdminControllerImpl(AdminService adminService) {
-	        this.adminService = adminService;
-	    }
-    @Override
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin";
-    }
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
+	private final AdminService adminService;
+	
+	public AdminControllerImpl(AdminService adminService) {
+		this.adminService = adminService;
+	}
 
-    @PostMapping("/login")
-    public String loginProcess(String id, String pw, HttpSession session, Model model) {
-        Admin admin = adminService.getAdminById(id);
-        if (admin != null && admin.getPw().equals(pw)) {
-            session.setAttribute("admin", admin);
-            return "redirect:/admin";
-        } else {
-            model.addAttribute("error", "Invalid username or password");
-            return "login";
-        }
-    }
+	@GetMapping("/login")
+	public ModelAndView showLoginPage() {
+		ModelAndView mav = new ModelAndView("/man/login");
+		return mav;
+	}
+
+	@PostMapping("/loginCheck")
+	public ModelAndView loginCheck(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
+	    ModelAndView mav = new ModelAndView();
+
+	    AdminLoginRequestDTO loginResult = adminService.login(id);
+
+	    if (loginResult.getId() != null) {
+	        System.out.println(" success loginResult : " + loginResult);
+	        mav.addObject("loginResult", loginResult);
+	        // 로그인 성공 시 /manufacturer/all로 리다이렉트
+	        mav.setViewName("redirect:/manufacturer/all");
+	    } else {
+	        System.out.println(" fail loginResult : " + loginResult);
+	        mav.setViewName("fail");
+	    }
+
+	    return mav;
+	}
+
+
 }

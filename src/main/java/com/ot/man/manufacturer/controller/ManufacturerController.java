@@ -1,7 +1,7 @@
 package com.ot.man.manufacturer.controller;
 
 
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +13,7 @@ import com.ot.man.manufacturer.data.dto.UpdateManufacturerStockDTO;
 public interface ManufacturerController {
 
 	  ModelAndView getManufacturer(Long out_number);
+	 
 //	  ResponseEntity(ManufacturerResponseDTO) get
 //	  ResponseEntity<ManufacturerDTO> insertManufacturer(@RequestBody ManufacturerDTO manufacturerDTO);
 	  

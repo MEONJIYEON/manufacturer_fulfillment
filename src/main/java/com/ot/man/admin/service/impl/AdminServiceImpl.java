@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ot.man.admin.data.dao.AdminDAO;
-import com.ot.man.admin.data.entity.Admin;
+import com.ot.man.admin.data.dto.AdminLoginRequestDTO;
 import com.ot.man.admin.service.AdminService;
 
 @Service
@@ -17,8 +17,9 @@ public class AdminServiceImpl implements AdminService {
         this.adminDAO = adminDAO;
     }
 
-    @Override
-    public Admin getAdminById(String id) {
-        return adminDAO.findById(id);
-    }
+	@Override
+	public AdminLoginRequestDTO login(String id) {
+		// TODO Auto-generated method stub
+		return adminDAO.login(id);
+	}
 }

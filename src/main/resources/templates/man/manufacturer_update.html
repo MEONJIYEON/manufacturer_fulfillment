@@ -77,11 +77,14 @@
    			 <label for="updateId">출고번호</label>
     		<input type="number" id="updateId" name="out_number" th:value="${out_number}" readOnly>
     		<label for="updateName">상품명</label>
-    		<input type="text" id="updateName" name="out_pname">
+    		<input type="text" id="updateName" name="out_pname" th:value="${out_pname}">
     		<label for="updateStock">상품재고</label>
-    		<input type="number" id="updateStock" name="out_stock">
+    		<input type="number" id="updateStock" name="out_stock" th:value="${out_stock}">
     		<label for="updateStatus">출고상태</label>
-   		 <input type="checkbox" id="updateStatus" name="out_status">
+   		 <div class="radio-group">
+                <label><input type="radio" id="updateStatusCompleted" name="out_status" value="1" th:checked="${out_status == 1}"> 출고완료</label>
+                <label><input type="radio" id="updateStatusNotCompleted" name="out_status" value="0" th:checked="${out_status == 0}"> 미출고</label>
+            </div>
     		<button type="submit">수정</button>
 		</form>
   </div>

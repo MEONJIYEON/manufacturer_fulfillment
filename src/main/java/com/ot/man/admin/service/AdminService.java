@@ -1,7 +1,7 @@
 package com.ot.man.admin.service;
 
-import com.ot.man.admin.data.entity.Admin;
+import com.ot.man.admin.data.dto.AdminLoginRequestDTO;
 
 public interface AdminService {
-	 Admin getAdminById(String id);
+	AdminLoginRequestDTO login(String id);
 }
