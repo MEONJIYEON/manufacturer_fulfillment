@@ -16,10 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ot.man.manufacturer.controller.ManufacturerController;
-import com.ot.man.manufacturer.data.dto.ManufacturerApiDTO;
+import com.ot.man.manufacturer.data.dto.MainToManufacturerDto;
 import com.ot.man.manufacturer.data.dto.ManufacturerDTO;
+import com.ot.man.manufacturer.data.dto.ManufacturerToMainDto;
 import com.ot.man.manufacturer.service.ManufacturerService;
-import com.ot.man.manufacturer.service.impl.ManufacturerServiceImpl;
 
 @RestController
 @RequestMapping("/manufacturer")
@@ -209,17 +209,19 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 //		
 //		return null;
 //	}
-//	
-	@PostMapping("/api")
-	public ResponseEntity<ManufacturerApiDTO> Body() {
-		return manufacturerService.postWithBodyOnly();
-	}
+	// WebClient 통신 제조사 -> 메인 요청
+	   @PostMapping("/manufacturerToMain")
+	   public ResponseEntity<ManufacturerToMainDto> manufacturerToMainDto(@RequestParam String out_productcode,
+	         @RequestParam String out_pname, @RequestParam Integer out_stock) {
+	      return manufacturerService.ManufacturerToMainDto(out_productcode, out_pname, out_stock);
+	   }
+	   
+	   // WebClient 통신 메인 -> 제조사 응답
+	   @PostMapping("/mainToManufacturer")
+	   public ResponseEntity<MainToManufacturerDto> mainToManufacturer(@RequestBody MainToManufacturerDto mainToManufacturerDto ){
+	      System.out.println(mainToManufacturerDto);
+	      return ResponseEntity.status(HttpStatus.OK).body(mainToManufacturerDto);
+	         
 
-	@PostMapping
-	public ResponseEntity<ManufacturerApiDTO> getProduct(@RequestBody ManufacturerApiDTO manufacturerApiDTO) {
-		System.out.println(manufacturerApiDTO.getOut_pname());
-		System.out.println(manufacturerApiDTO.getOut_stock());
-		return ResponseEntity.status(HttpStatus.OK).body(manufacturerApiDTO);
-	}
-
+	   }
 }
