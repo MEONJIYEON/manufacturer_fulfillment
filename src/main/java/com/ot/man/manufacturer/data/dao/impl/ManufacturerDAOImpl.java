@@ -1,6 +1,7 @@
 package com.ot.man.manufacturer.data.dao.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ public class ManufacturerDAOImpl implements ManufacturerDAO {
 		}
 
 		Manufacturer manufacturer = optionalManufacturer.get();
+		manufacturer.setOut_pname(out_pname);
 		manufacturer.setOut_status(out_status);
 		manufacturer.setOut_stock(out_stock);
 
@@ -73,6 +75,14 @@ public class ManufacturerDAOImpl implements ManufacturerDAO {
 		}
 		
 	}
+
+	@Override
+	public List<Manufacturer> selectManufacturerAll() {
+		 return manufacturerRepository.findAll();
+	
+	}
+
+
 
 //	@Override
 //	public Manufacturer insertProduct(Manufacturer manufacturer) {

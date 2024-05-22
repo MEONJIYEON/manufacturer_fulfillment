@@ -17,4 +17,8 @@ public class ManufacturerDTO {
     private LocalDateTime out_complete_at;
     private boolean out_status;
     private LocalDateTime out_date;
+	private long out_history;
+	
+		
+	
 }
