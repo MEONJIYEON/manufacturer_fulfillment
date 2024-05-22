@@ -47,6 +47,8 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 		return mav;
 	}
 
+	
+
 //	@GetMapping("/all")
 //    public ResponseEntity<List<ManufacturerDTO>> getAllManufacturers() {
 //        List<ManufacturerDTO> manufacturers = manufacturerService.getAllManufacturers();
@@ -152,14 +154,33 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 		return mav;
 	}
 
+//	@GetMapping("/updatepage")
+//	public ModelAndView showUpdateForm(@RequestParam("out_number") String out_number,
+//			@RequestParam("out_pname") String out_pname, 
+//			@RequestParam("out_stock")String out_stock) {
+//		System.out.println(out_number);
+//		System.out.println(out_pname);
+//		System.out.println(out_stock);
+//		ModelAndView mav = new ModelAndView("/man/manufacturer_update");
+//		mav.addObject("out_number", out_number);
+//		mav.addObject("out_pname", out_pname);
+//		mav.addObject("out_stock", out_stock);
+//		return mav;
+//	}
+	
 	@GetMapping("/updatepage")
-	public ModelAndView showUpdateForm(@RequestParam("out_number") String out_number) {
+	public ModelAndView showUpdateForm(@RequestParam("out_number")String out_number,
+			@RequestParam("out_pname") String out_pname, 
+			@RequestParam("out_stock")String out_stock) {
 		System.out.println(out_number);
+		System.out.println(out_pname);
+		System.out.println(out_stock);
 		ModelAndView mav = new ModelAndView("/man/manufacturer_update");
 		mav.addObject("out_number", out_number);
+		mav.addObject("out_pname", out_pname);
+		mav.addObject("out_stock", out_stock);
 		return mav;
 	}
-
 	/*
 	 * @DeleteMapping("/{out_number}") public
 	 * ResponseEntity<String>deleteManufacturer(@PathVariable("out_number")Long

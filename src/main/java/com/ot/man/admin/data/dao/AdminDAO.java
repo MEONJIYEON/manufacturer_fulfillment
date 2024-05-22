@@ -1,7 +1,10 @@
 package com.ot.man.admin.data.dao;
 
-import com.ot.man.admin.data.entity.Admin;
+import com.ot.man.admin.data.dto.AdminLoginRequestDTO;
 
 public interface AdminDAO {
-	 Admin findById(String id);
+	
+	//로그인
+	AdminLoginRequestDTO login(String id);
+	
 }
