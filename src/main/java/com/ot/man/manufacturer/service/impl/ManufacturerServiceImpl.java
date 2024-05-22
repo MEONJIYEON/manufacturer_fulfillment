@@ -6,9 +6,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.ot.man.manufacturer.data.dao.ManufacturerDAO;
+import com.ot.man.manufacturer.data.dto.ManufacturerApiDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerResponseDTO;
 import com.ot.man.manufacturer.data.entity.Manufacturer;
@@ -102,7 +107,28 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 		
 	}
 
-	
+	@Override
+	public ResponseEntity<ManufacturerApiDTO> postWithBodyOnly() {
+	    WebClient webClient = WebClient.builder()
+	            .baseUrl("http://localhost:9001")
+	            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+	            .build();
+
+	    ManufacturerApiDTO manufacturerApiDTO = new ManufacturerApiDTO();
+	    manufacturerApiDTO.setOut_pname("testname");
+	    manufacturerApiDTO.setOut_stock(100L);
+
+	    return webClient.post()
+	            .uri("/api/v1/crud-api")
+	            .bodyValue(manufacturerApiDTO)
+	            .retrieve()
+	            .toEntity(ManufacturerApiDTO.class)
+	            .block();
+	}
+
+
+ 
+
 
 //	@Override
 //	public ManufacturerDTO insertManufacturer(ManufacturerDTO ManufacturerDTO) {

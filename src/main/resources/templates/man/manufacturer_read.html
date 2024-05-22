@@ -81,9 +81,14 @@
 </head>
 <body>
 <div class="container">
-        <h1>All Manufacturers</h1>
+        <h1>Manufacturer's Products</h1>
         <div th:if="${message}">
             <p th:text="${message}"></p>
+        </div>
+        <div style="text-align: right; margin-top: 20px; width:150px;">
+            <form th:action="@{/manufacturer/insertpage}" method="get">
+                <button type="submit">생성</button>
+            </form>
         </div>
         <table>
             <thead>
@@ -100,7 +105,7 @@
                     <td th:text="${manufacturer.out_number}"></td>
                     <td th:text="${manufacturer.out_pname}"></td>
                     <td th:text="${manufacturer.out_stock}"></td>
-                    <td th:text="${manufacturer.out_status ? 'Completed' : 'In Progress'}"></td>
+                    <td th:text="${manufacturer.out_status ? 'Completed' : 'NotCompleted'}"></td>
                     <td >
                         <form th:action="@{/manufacturer/delete}" method="post">
                             <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
@@ -111,6 +116,7 @@
                         	<input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
                         	<button type="submit">수정</button>
                         </form>
+                       
                     </td>
                 </tr>
             </tbody>

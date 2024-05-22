@@ -2,6 +2,9 @@ package com.ot.man.manufacturer.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
+import com.ot.man.manufacturer.data.dto.ManufacturerApiDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerResponseDTO;
 
@@ -17,6 +20,7 @@ public interface ManufacturerService {
 
 	List<ManufacturerDTO> getAllManufacturers();
 	
+	ResponseEntity<ManufacturerApiDTO> postWithBodyOnly();
 //	ManufacturerDTO insertManufacturer(ManufacturerDTO manufacturerDTO);
 
 }
