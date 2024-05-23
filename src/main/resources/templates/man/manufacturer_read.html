@@ -104,7 +104,7 @@
                     data: form.serialize(),
                     success: function(response) {
                         alert('출고 완료');
-                        location.reload(); // 페이지를 새로고침하여 변경된 상태를 반영합니다.
+                        location.reload(); // 페이지를 새로고침하여 변경된 상태를 반영
                     },
                     error: function(xhr, status, error) {
                         alert('출고 실패: ' + error);
@@ -151,7 +151,7 @@
                                 <input type="hidden" name="out_pname" th:value="${manufacturer.out_pname}">
                                 <input type="hidden" name="out_stock" th:value="${manufacturer.out_stock}">
                                 <input type="hidden" name="out_productcode" th:value="${manufacturer.out_productcode}">
-                                <button type="submit" class="ship-button" th:disabled="${manufacturer.out_status}">출고</button>
+                                <button type="submit" class="ship-button" th:value="${manufacturer.out_status ? '출고완료' : '미출고'}">출고</button>
                             </form>
                             <form th:action="@{/manufacturer/updatepage}" method="get">
                                 <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">

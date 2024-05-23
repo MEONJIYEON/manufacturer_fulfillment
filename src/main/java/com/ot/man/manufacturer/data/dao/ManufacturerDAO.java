@@ -15,6 +15,10 @@ public interface ManufacturerDAO {
 	Manufacturer updateManufacturerStock(Long out_number, String out_pname, boolean out_status , Integer out_stock) throws Exception;
 	
 	void deleteManufacturer(Long out_number) throws Exception;
+
+	void updateStatusById(Long out_number) throws Exception;
+	
+	
 	
 //	Manufacturer insertProduct(Manufacturer manufacturer);
 }

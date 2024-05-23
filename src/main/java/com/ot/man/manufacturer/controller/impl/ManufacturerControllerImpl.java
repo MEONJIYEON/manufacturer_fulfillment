@@ -147,9 +147,7 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 	public ModelAndView updateManufacturerStock(@RequestParam("out_number") Long out_number,
 			@RequestParam("out_pname") String out_pname, @RequestParam("out_status") boolean out_status,
 			@RequestParam("out_stock") Integer out_stock, RedirectAttributes redirectAttributes) throws Exception {
-		manufacturerService.updateManufacturerStock(
-
-				out_number, out_pname, out_status, out_stock);
+		manufacturerService.updateManufacturerStock(out_number, out_pname, out_status, out_stock);
 
 		ModelAndView mav = new ModelAndView("redirect:/manufacturer/all");
 
@@ -213,9 +211,9 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 //	}
 	// WebClient 통신 제조사 -> 메인 요청
 	   @PostMapping("/manufacturerToMain")
-	   public ResponseEntity<ManufacturerToMainDto> manufacturerToMainDto(@RequestParam String out_productcode,@RequestParam String out_pname, @RequestParam Integer out_stock) {
+	   public ResponseEntity<ManufacturerToMainDto> manufacturerToMainDto(@RequestParam String out_productcode,@RequestParam String out_pname, @RequestParam Integer out_stock, @RequestParam Long out_number) throws Exception {
 		   
-	      return manufacturerService.ManufacturerToMainDto(out_productcode, out_pname, out_stock);
+	      return manufacturerService.ManufacturerToMainDto(out_productcode, out_pname, out_stock, out_number);
 	   }
 	   
 	   // WebClient 통신 메인 -> 제조사 응답

@@ -32,6 +32,6 @@ public interface ManufacturerService {
 
 
 
-	ResponseEntity<ManufacturerToMainDto> ManufacturerToMainDto(String out_productcode, String out_pname,Integer out_stock);
+	ResponseEntity<ManufacturerToMainDto> ManufacturerToMainDto(String out_productcode, String out_pname,Integer out_stock, Long out_number) throws Exception;
 
 }
