@@ -226,4 +226,14 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 	         
 
 	   }
+
+	@GetMapping("/index")
+	@Override
+	public ModelAndView index() {
+
+		List<ManufacturerDTO> manufacturers = manufacturerService.getAllManufacturers();
+		ModelAndView mav = new ModelAndView("/man/index");
+		mav.addObject("manufacturers", manufacturers);
+		return mav;
+	}
 }

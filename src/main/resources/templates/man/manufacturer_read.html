@@ -1,9 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Manufacturer Management</title>
-    <meta charset="utf8">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.ship-button').click(function(event) {
+                event.preventDefault();
+                var form = $(this).closest('form');
+                var button = $(this);
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        alert('출고 완료');
+                        button.prop('disabled', true);
+                        button.text('출고완료');
+                        button.closest('tr').find('.status-cell').text('출고완료');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('출고 실패: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,6 +88,10 @@
         button:hover {
             background-color: #0056b3;
         }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -83,7 +117,7 @@
             margin: 0 5px;
         }
         .action-cell {
-            width: 200px;
+            width: 300px;
         }
         .create-button-container {
             text-align: right;
@@ -93,81 +127,109 @@
             width: 150px; /* 원하는 너비로 설정 */
         }
     </style>
-    <script>
-        $(document).ready(function() {
-            $('.ship-button').click(function(event) {
-                event.preventDefault();
-                var form = $(this).closest('form');
-                $.ajax({
-                    type: form.attr('method'),
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    success: function(response) {
-                        alert('출고 완료');
-                        location.reload(); // 페이지를 새로고침하여 변경된 상태를 반영
-                    },
-                    error: function(xhr, status, error) {
-                        alert('출고 실패: ' + error);
-                    }
-                });
-                $(this).prop('disabled', true);
-            });
-        });
-    </script>
 </head>
-<body>
-<div class="container">
-        <h1>Manufacturer's Products</h1>
-        <div th:if="${message}">
-            <p th:text="${message}"></p>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Manufacturer's Management</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+       
+        
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+						<div class="create-button-container">
+							<a class="nav-link create-button"
+								th:href="@{/manufacturer/insertpage}">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-tachometer-alt"></i>
+								</div> 상품제조
+							</a>
+						</div>
+
+
+
+					</div>
+               
+            </nav>
         </div>
-        <div class="create-button-container">
-            <form th:action="@{/manufacturer/insertpage}" method="get">
-                <button type="submit" class="create-button">생성</button>
-            </form>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>상품번호</th>
-                    <th>상품명</th>
-                    <th>상품코드</th>
-                    <th>상품재고</th>
-                    <th>출고상태</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="manufacturer : ${manufacturers}">
-                    <td th:text="${manufacturer.out_number}"></td>
-                    <td th:text="${manufacturer.out_pname}"></td>
-                    <td th:text="${manufacturer.out_productcode}"></td>
-                    <td th:text="${manufacturer.out_stock}"></td>
-                    <td th:text="${manufacturer.out_status ? '출고완료' : '미출고'}"></td>
-                    <td class="action-cell">
-                        <div class="button-group">
-                            <form th:action="@{/manufacturer/manufacturerToMain}" method="post">
-                                <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
-                                <input type="hidden" name="out_pname" th:value="${manufacturer.out_pname}">
-                                <input type="hidden" name="out_stock" th:value="${manufacturer.out_stock}">
-                                <input type="hidden" name="out_productcode" th:value="${manufacturer.out_productcode}">
-                                <button type="submit" class="ship-button" th:value="${manufacturer.out_status ? '출고완료' : '미출고'}">출고</button>
-                            </form>
-                            <form th:action="@{/manufacturer/updatepage}" method="get">
-                                <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
-                                <input type="hidden" name="out_pname" th:value="${manufacturer.out_pname}">
-                                <input type="hidden" name="out_stock" th:value="${manufacturer.out_stock}">
-                                <button type="submit">수정</button>
-                            </form>
-                            <form th:action="@{/manufacturer/delete}" method="post">
-                                <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
-                                <button type="submit">삭제</button>
-                            </form>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container">
+                    <h1>Manufacturer's Products</h1>
+                    <div th:if="${message}">
+                        <p th:text="${message}"></p>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>상품번호</th>
+                                <th>상품명</th>
+                                <th>상품코드</th>
+                                <th>상품재고</th>
+                                <th>출고상태</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="manufacturer : ${manufacturers}">
+                                <td th:text="${manufacturer.out_number}"></td>
+                                <td th:text="${manufacturer.out_pname}"></td>
+                                <td th:text="${manufacturer.out_productcode}"></td>
+                                <td th:text="${manufacturer.out_stock}"></td>
+                                <td class="status-cell" th:text="${manufacturer.out_status ? '출고완료' : '미출고'}"></td>
+                                <td class="action-cell">
+                                    <div class="button-group">
+                                        <form th:action="@{/manufacturer/manufacturerToMain}" method="post">
+                                            <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
+                                            <input type="hidden" name="out_pname" th:value="${manufacturer.out_pname}">
+                                            <input type="hidden" name="out_stock" th:value="${manufacturer.out_stock}">
+                                            <input type="hidden" name="out_productcode" th:value="${manufacturer.out_productcode}">
+                                            <button type="submit" class="ship-button" th:text="${manufacturer.out_status ? '출고완료' : '출고'}" th:disabled="${manufacturer.out_status}"></button>
+                                        </form>
+                                        <form th:action="@{/manufacturer/updatepage}" method="get">
+                                            <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
+                                            <input type="hidden" name="out_pname" th:value="${manufacturer.out_pname}">
+                                            <input type="hidden" name="out_stock" th:value="${manufacturer.out_stock}">
+                                            <button type="submit">수정</button>
+                                        </form>
+                                        <form th:action="@{/manufacturer/delete}" method="post">
+                                            <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
+                                            <button type="submit">삭제</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Manufacturer &board; Manufacturer site</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </footer>
+        </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="/js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="/assets/demo/chart-area-demo.js"></script>
+    <script src="/assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="/js/datatables-simple-demo.js"></script>
 </body>
 </html>
