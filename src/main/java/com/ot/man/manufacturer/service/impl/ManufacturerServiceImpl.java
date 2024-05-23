@@ -152,20 +152,18 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	}
 
 	@Override
-	public ResponseEntity<ManufacturerToMainDto> ManufacturerToMainDto(
-			String out_productcode, String out_pname, Integer out_stock) {
+	public ResponseEntity<ManufacturerToMainDto> ManufacturerToMainDto( String out_productcode, String out_pname, Integer out_stock, Long out_number) throws Exception {
 		WebClient webClient = WebClient.builder()
 	               .baseUrl("http://localhost:9001")
 	               .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 	               .build();
-	      
-		   //
-		
+
+		  manufacturerDAO.updateStatusById(out_number);
 	       ManufacturerToMainDto manufacturerToMainDto = new ManufacturerToMainDto();
 	       manufacturerToMainDto.setOut_pname(out_productcode);
 	       manufacturerToMainDto.setOut_productcode(out_pname);
 	       manufacturerToMainDto.setOut_stock(out_stock);
-
+	     
 	       
 	       return webClient.post()
 	               .uri("/api/v1/main-fulfillment/in/manufacturerToMain")
@@ -176,6 +174,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	       
 	      
 	   }
+
 	
 }
 

@@ -62,6 +62,8 @@ public class ManufacturerDAOImpl implements ManufacturerDAO {
 		return manufacturerRepository.save(manufacturer);
 	}
 	
+
+	
 	@Override
 	@Transactional
 	public void deleteManufacturer(Long out_number) throws Exception {
@@ -82,7 +84,19 @@ public class ManufacturerDAOImpl implements ManufacturerDAO {
 		 return manufacturerRepository.findAll();
 	
 	}
-
+	 @Override
+	    @Transactional
+	    public void updateStatusById(Long out_number) throws Exception {
+		 Optional<Manufacturer> optionalManufacturer= manufacturerRepository.findById(out_number);
+		 
+		 if (!optionalManufacturer.isPresent()) {
+				throw new Exception("Manufacturer not found");
+			}
+		 Manufacturer manufacturer = optionalManufacturer.get();
+	        manufacturer.setOut_status(true);
+	        manufacturer.setOut_complete_at(LocalDateTime.now());
+	        manufacturerRepository.save(manufacturer);
+	    }
 
 
 //	@Override
