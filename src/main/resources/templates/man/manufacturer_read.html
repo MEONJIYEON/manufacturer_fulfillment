@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Manufacturer Management</title>
-  	<meta charset="utf8">
+    <meta charset="utf8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
@@ -48,7 +48,7 @@
             background-color: #007BFF;
             color: #fff;
             cursor: pointer;
-            padding: 10px 20px;
+            padding: 10px;
             border: none;
             border-radius: 4px;
             margin: 0 5px;
@@ -93,6 +93,27 @@
             width: 150px; /* 원하는 너비로 설정 */
         }
     </style>
+    <script>
+        $(document).ready(function() {
+            $('.ship-button').click(function(event) {
+                event.preventDefault();
+                var form = $(this).closest('form');
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        alert('출고 완료');
+                        location.reload(); // 페이지를 새로고침하여 변경된 상태를 반영합니다.
+                    },
+                    error: function(xhr, status, error) {
+                        alert('출고 실패: ' + error);
+                    }
+                });
+                $(this).prop('disabled', true);
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="container">
@@ -101,17 +122,16 @@
             <p th:text="${message}"></p>
         </div>
         <div class="create-button-container">
-      
             <form th:action="@{/manufacturer/insertpage}" method="get">
                 <button type="submit" class="create-button">생성</button>
             </form>
-            
         </div>
         <table>
             <thead>
                 <tr>
                     <th>상품번호</th>
                     <th>상품명</th>
+                    <th>상품코드</th>
                     <th>상품재고</th>
                     <th>출고상태</th>
                     <th>Action</th>
@@ -121,21 +141,28 @@
                 <tr th:each="manufacturer : ${manufacturers}">
                     <td th:text="${manufacturer.out_number}"></td>
                     <td th:text="${manufacturer.out_pname}"></td>
+                    <td th:text="${manufacturer.out_productcode}"></td>
                     <td th:text="${manufacturer.out_stock}"></td>
                     <td th:text="${manufacturer.out_status ? '출고완료' : '미출고'}"></td>
                     <td class="action-cell">
                         <div class="button-group">
-                        <form th:action="@{/manufacturer/updatepage}" method="get">
+                            <form th:action="@{/manufacturer/manufacturerToMain}" method="post">
                                 <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
-                                 <input type="hidden" name="out_pname" th:value="${manufacturer.out_pname}">
-                                 <input type="hidden" name="out_stock" th:value="${manufacturer.out_stock}">
+                                <input type="hidden" name="out_pname" th:value="${manufacturer.out_pname}">
+                                <input type="hidden" name="out_stock" th:value="${manufacturer.out_stock}">
+                                <input type="hidden" name="out_productcode" th:value="${manufacturer.out_productcode}">
+                                <button type="submit" class="ship-button" th:disabled="${manufacturer.out_status}">출고</button>
+                            </form>
+                            <form th:action="@{/manufacturer/updatepage}" method="get">
+                                <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
+                                <input type="hidden" name="out_pname" th:value="${manufacturer.out_pname}">
+                                <input type="hidden" name="out_stock" th:value="${manufacturer.out_stock}">
                                 <button type="submit">수정</button>
                             </form>
                             <form th:action="@{/manufacturer/delete}" method="post">
                                 <input type="hidden" name="out_number" th:value="${manufacturer.out_number}">
                                 <button type="submit">삭제</button>
                             </form>
-                            
                         </div>
                     </td>
                 </tr>

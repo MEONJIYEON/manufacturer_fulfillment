@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ManufacturerApiDTO {
 	private String out_pname;
-	private Long out_stock;
+	private Integer out_stock;
 }

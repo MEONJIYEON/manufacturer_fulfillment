@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.ot.man.manufacturer.data.dao.ManufacturerDAO;
+import com.ot.man.manufacturer.data.dto.MainToManufacturerDto;
 import com.ot.man.manufacturer.data.dto.ManufacturerApiDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerResponseDTO;
@@ -58,6 +59,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
             manufacturerDTO.setOut_status(manufacturer.isOut_status());
             manufacturerDTO.setOut_date(manufacturer.getOut_date());
             manufacturerDTO.setOut_history(manufacturer.getOut_history());
+            manufacturerDTO.setOut_productcode(manufacturer.getOut_productcode());
             return manufacturerDTO;
         }).collect(Collectors.toList());
     }
@@ -67,6 +69,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 		Manufacturer manufacturer = new Manufacturer();
 		manufacturer.setOut_pname(manufacturerDTO.getOut_pname());
 		manufacturer.setOut_stock(manufacturerDTO.getOut_stock());
+		manufacturer.setOut_productcode(manufacturerDTO.getOut_productcode());
 		manufacturer.setOut_start_at(LocalDateTime.now());
 		manufacturer.setOut_complete_at(LocalDateTime.now());
 		manufacturer.setOut_status(manufacturerDTO.isOut_status());
@@ -77,16 +80,40 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	        manufacturerResponseDTO.setOut_number(savedManufacturer.getOut_number());
 	        manufacturerResponseDTO.setOut_pname(savedManufacturer.getOut_pname());
 	        manufacturerResponseDTO.setOut_stock(savedManufacturer.getOut_stock());
+	        manufacturerResponseDTO.setOut_productcode(savedManufacturer.getOut_productcode());
+	  
 	        
 			return manufacturerResponseDTO;
 
 	        
 	}
-
 	@Override
-	public ManufacturerResponseDTO updateManufacturerStock(Long out_number,String out_pname, boolean out_status,  Long out_stock) throws Exception {
+	public ManufacturerResponseDTO printManufacturer(MainToManufacturerDto mainToManufacturerDto) {
+		Manufacturer manufacturer = new Manufacturer();
+		manufacturer.setOut_pname(mainToManufacturerDto.getOut_pname());
+		manufacturer.setOut_stock(mainToManufacturerDto.getOut_stock());
+		manufacturer.setOut_productcode(mainToManufacturerDto.getOut_productcode());
+		manufacturer.setOut_start_at(LocalDateTime.now());
+		manufacturer.setOut_complete_at(LocalDateTime.now());
+		manufacturer.setOut_status(false);
+		
+		 Manufacturer printedManufacturer = manufacturerDAO.insertManufacturer(manufacturer);
+
+	        ManufacturerResponseDTO manufacturerResponseDTO = new ManufacturerResponseDTO();
+	        manufacturerResponseDTO.setOut_number(printedManufacturer.getOut_number());
+	        manufacturerResponseDTO.setOut_pname(printedManufacturer.getOut_pname());
+	        manufacturerResponseDTO.setOut_stock(printedManufacturer.getOut_stock());
+	        manufacturerResponseDTO.setOut_productcode(printedManufacturer.getOut_productcode());
+	  
+	        
+			return manufacturerResponseDTO;
+	}
 	
-		Manufacturer updateManufacturer = manufacturerDAO.updateManufacturerStock(out_number, out_pname, out_status, out_stock);
+	
+	@Override
+	public ManufacturerResponseDTO updateManufacturerStock(Long out_number,String out_pname,boolean out_status, Integer out_stock) throws Exception {
+	
+		Manufacturer updateManufacturer = manufacturerDAO.updateManufacturerStock(out_number, out_pname,out_status, out_stock);
 		
 		ManufacturerResponseDTO manufacturerResponseDTO = new ManufacturerResponseDTO();
 		manufacturerResponseDTO.setOut_number(updateManufacturer.getOut_number());
@@ -114,7 +141,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 
 	    ManufacturerApiDTO manufacturerApiDTO = new ManufacturerApiDTO();
 	    manufacturerApiDTO.setOut_pname("testname");
-	    manufacturerApiDTO.setOut_stock(100L);
+	    manufacturerApiDTO.setOut_stock(100);
 
 	    return webClient.post()
 	            .uri("/api/v1/crud-api")
@@ -124,27 +151,42 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 	            .block();
 	}
 
-	public ResponseEntity<ManufacturerToMainDto> ManufacturerToMainDto(String out_productcode,String out_pname, Integer out_stock) {
-	       WebClient webClient = WebClient.builder()
+	@Override
+	public ResponseEntity<ManufacturerToMainDto> ManufacturerToMainDto(
+			String out_productcode, String out_pname, Integer out_stock) {
+		WebClient webClient = WebClient.builder()
 	               .baseUrl("http://localhost:9001")
 	               .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 	               .build();
-	       
-	       // 세션에서 product_code값을 가지고 와서 findbyId()가 실행되는 컨트롤러 실행
-	       // manufacturerControllerImpl.insertManufacturer("session_name", "", null)
-
+	      
+		   //
+		
 	       ManufacturerToMainDto manufacturerToMainDto = new ManufacturerToMainDto();
 	       manufacturerToMainDto.setOut_pname(out_productcode);
 	       manufacturerToMainDto.setOut_productcode(out_pname);
 	       manufacturerToMainDto.setOut_stock(out_stock);
 
+	       
 	       return webClient.post()
 	               .uri("/api/v1/main-fulfillment/in/manufacturerToMain")
 	               .bodyValue(manufacturerToMainDto)
 	               .retrieve()
 	               .toEntity(ManufacturerToMainDto.class)
 	               .block();
+	       
+	      
 	   }
+	
+}
+
+	
+
+
+
+	
+
+	
+	
  
 
 
@@ -163,5 +205,5 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 //		
 //		return manufacturerDTOBeta;
 //	}
+	
 
-}
