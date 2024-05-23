@@ -18,5 +18,6 @@ public interface ManufacturerController {
 //	  ResponseEntity<ManufacturerDTO> insertManufacturer(@RequestBody ManufacturerDTO manufacturerDTO);
 	  
 	 //ResponseEntity<ManufacturerResponseDTO> updateManufacturerStock(@RequestBody UpdateManufacturerStockDTO updateManufacturerStockDTO) throws Exception;
-	
+	 
+	  ModelAndView index();
 }
