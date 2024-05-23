@@ -40,7 +40,7 @@ public class ManufacturerDAOImpl implements ManufacturerDAO {
 
 	@Override
 	@Transactional
-	public Manufacturer updateManufacturerStock(Long out_number, String out_pname, boolean out_status, Long out_stock) throws Exception  {
+	public Manufacturer updateManufacturerStock(Long out_number, String out_pname, boolean out_status, Integer out_stock) throws Exception  {
 		Optional<Manufacturer> optionalManufacturer = manufacturerRepository.findById(out_number);
 		
 		if (!optionalManufacturer.isPresent()) {
@@ -51,6 +51,7 @@ public class ManufacturerDAOImpl implements ManufacturerDAO {
 		manufacturer.setOut_pname(out_pname);
 		manufacturer.setOut_status(out_status);
 		manufacturer.setOut_stock(out_stock);
+		manufacturer.setOut_status(true);
 
 		if (out_status) {
 			manufacturer.setOut_complete_at(LocalDateTime.now());

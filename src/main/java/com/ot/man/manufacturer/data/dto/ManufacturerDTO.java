@@ -12,12 +12,13 @@ import lombok.NoArgsConstructor;
 public class ManufacturerDTO {
 	private long out_number;
     private String out_pname;
-    private long out_stock;
+    private Integer out_stock;
     private LocalDateTime out_start_at;
     private LocalDateTime out_complete_at;
     private boolean out_status;
     private LocalDateTime out_date;
 	private long out_history;
+	private String out_productcode;
 	
 		
 	

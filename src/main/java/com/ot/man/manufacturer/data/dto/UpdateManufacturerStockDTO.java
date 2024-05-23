@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateManufacturerStockDTO {
 	private Long out_number;
-	private Long out_stock;
+	private Integer out_stock;
 	private String out_pname;
 	private boolean out_status;
 }

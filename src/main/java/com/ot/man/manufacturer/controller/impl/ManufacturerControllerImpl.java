@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ot.man.manufacturer.controller.ManufacturerController;
 import com.ot.man.manufacturer.data.dto.MainToManufacturerDto;
 import com.ot.man.manufacturer.data.dto.ManufacturerDTO;
+import com.ot.man.manufacturer.data.dto.ManufacturerResponseDTO;
 import com.ot.man.manufacturer.data.dto.ManufacturerToMainDto;
 import com.ot.man.manufacturer.service.ManufacturerService;
 
@@ -89,10 +90,11 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 
 	@PostMapping("/insert")
 	public ModelAndView insertManufacturer(@RequestParam("out_stock") String out_stock,
-			@RequestParam("out_pname") String out_pname, RedirectAttributes redirectAttributes) {
+			@RequestParam("out_pname") String out_pname, @RequestParam("out_productcode") String out_productcode,RedirectAttributes redirectAttributes) {
 		ManufacturerDTO manufacturerDTO = new ManufacturerDTO();
-		manufacturerDTO.setOut_stock(Long.parseLong(out_stock));
+		manufacturerDTO.setOut_stock(Integer.parseInt(out_stock));
 		manufacturerDTO.setOut_pname(out_pname);
+		manufacturerDTO.setOut_productcode(out_productcode);
 
 		manufacturerService.saveManufacturer(manufacturerDTO);
 //        redirectAttributes.addFlashAttribute("message", "Manufacturer created successfully!");
@@ -144,7 +146,7 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 	@PostMapping("/update")
 	public ModelAndView updateManufacturerStock(@RequestParam("out_number") Long out_number,
 			@RequestParam("out_pname") String out_pname, @RequestParam("out_status") boolean out_status,
-			@RequestParam("out_stock") Long out_stock, RedirectAttributes redirectAttributes) throws Exception {
+			@RequestParam("out_stock") Integer out_stock, RedirectAttributes redirectAttributes) throws Exception {
 		manufacturerService.updateManufacturerStock(
 
 				out_number, out_pname, out_status, out_stock);
@@ -211,16 +213,18 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 //	}
 	// WebClient 통신 제조사 -> 메인 요청
 	   @PostMapping("/manufacturerToMain")
-	   public ResponseEntity<ManufacturerToMainDto> manufacturerToMainDto(@RequestParam String out_productcode,
-	         @RequestParam String out_pname, @RequestParam Integer out_stock) {
+	   public ResponseEntity<ManufacturerToMainDto> manufacturerToMainDto(@RequestParam String out_productcode,@RequestParam String out_pname, @RequestParam Integer out_stock) {
+		   
 	      return manufacturerService.ManufacturerToMainDto(out_productcode, out_pname, out_stock);
 	   }
 	   
 	   // WebClient 통신 메인 -> 제조사 응답
 	   @PostMapping("/mainToManufacturer")
-	   public ResponseEntity<MainToManufacturerDto> mainToManufacturer(@RequestBody MainToManufacturerDto mainToManufacturerDto ){
+	   public ResponseEntity<ManufacturerResponseDTO> mainToManufacturer(@RequestBody MainToManufacturerDto mainToManufacturerDto ){
 	      System.out.println(mainToManufacturerDto);
-	      return ResponseEntity.status(HttpStatus.OK).body(mainToManufacturerDto);
+	      ManufacturerResponseDTO manufacturerResponseDTO = manufacturerService.printManufacturer(mainToManufacturerDto);
+	      
+	      return ResponseEntity.status(HttpStatus.OK).body(manufacturerResponseDTO);
 	         
 
 	   }

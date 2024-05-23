@@ -37,7 +37,7 @@ public class Manufacturer {
 	
 	// 출고 개수
 	@Column(nullable = false)
-	private long out_stock; 
+	private Integer out_stock; 
 	
 	//출고 시작(출고 중) 날짜 (현재 시간으로 초기화)
 	private LocalDateTime out_start_at;
@@ -55,6 +55,9 @@ public class Manufacturer {
 	  @Column(nullable = false)
 	    private int out_history;  // 새 필드 추가
 	
+	  @Column
+		private String out_productcode;
+	  
 	@PrePersist
     protected void onCreate() {
         out_start_at = LocalDateTime.now();
