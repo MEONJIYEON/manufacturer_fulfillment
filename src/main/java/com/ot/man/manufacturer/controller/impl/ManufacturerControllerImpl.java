@@ -209,6 +209,7 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 //		
 //		return null;
 //	}
+	
 	// WebClient 통신 제조사 -> 메인 요청
 	   @PostMapping("/manufacturerToMain")
 	   public ResponseEntity<ManufacturerToMainDto> manufacturerToMainDto(@RequestParam String out_productcode,@RequestParam String out_pname, @RequestParam Integer out_stock, @RequestParam Long out_number) throws Exception {
@@ -216,16 +217,43 @@ public class ManufacturerControllerImpl implements ManufacturerController {
 	      return manufacturerService.ManufacturerToMainDto(out_productcode, out_pname, out_stock, out_number);
 	   }
 	   
+//	@PostMapping("/manufacturerToMain")
+//	   public ResponseEntity<ManufacturerToMainDto> manufacturerToMainDto(@RequestParam String out_productcode,@RequestParam String out_pname, @RequestParam Integer out_stock, @RequestParam Long out_number) throws Exception {
+//		 ManufacturerResponseDTO manufacturerResponseDTO = manufacturerService.printManufacturer(manufacturerToMainDto);
+//	      return manufacturerService.ManufacturerToMainDto(out_productcode, out_pname, out_stock, out_number);
+//	   }
+//	@PostMapping("/manufacturerToMain")
+//	public ResponseEntity<ManufacturerResponseDTO> manufacturerToMainDto(@RequestBody MainToManufacturerDto mainToManufacturerDto) {
+//	    System.out.println(mainToManufacturerDto);
+//
+//	    ManufacturerResponseDTO manufacturerResponseDTO = manufacturerService.printManufacturer(mainToManufacturerDto);
+//
+//	    return ResponseEntity.status(HttpStatus.OK).body(manufacturerResponseDTO);
+//	}
+//	
+//	@PostMapping("/mainToManufacturer")
+//	public ResponseEntity<ManufacturerToMainDto> mainToManufacturer(@RequestParam String out_productcode, @RequestParam String out_pname, @RequestParam Integer out_stock, @RequestParam Long out_number) throws Exception {
+//	    return manufacturerService.ManufacturerToMainDto(out_productcode, out_pname, out_stock, out_number);
+//	}
+
+
+	   
+	   
 	   // WebClient 통신 메인 -> 제조사 응답
 	   @PostMapping("/mainToManufacturer")
 	   public ResponseEntity<ManufacturerResponseDTO> mainToManufacturer(@RequestBody MainToManufacturerDto mainToManufacturerDto ){
 	      System.out.println(mainToManufacturerDto);
+	      
+	      
 	      ManufacturerResponseDTO manufacturerResponseDTO = manufacturerService.printManufacturer(mainToManufacturerDto);
 	      
 	      return ResponseEntity.status(HttpStatus.OK).body(manufacturerResponseDTO);
 	         
 
 	   }
+	   
+
+
 
 	@GetMapping("/index")
 	@Override
