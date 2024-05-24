@@ -53,7 +53,7 @@ public class Manufacturer {
 	 private LocalDateTime out_date;
 	
 	  @Column(nullable = false)
-	    private int out_history;  // 새 필드 추가
+	    private int out_history; 
 	
 	  @Column
 		private String out_productcode;
@@ -62,7 +62,7 @@ public class Manufacturer {
     protected void onCreate() {
         out_start_at = LocalDateTime.now();
         if (out_date == null) {
-            out_date = LocalDateTime.now();  // 기본값 설정
+            out_date = LocalDateTime.now();  
         }
         if (out_history == 0) {
             out_history = 1;
